@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-todos-shell',
+  selector: 'todos-shell',
   templateUrl: './todos-shell.component.html',
   styleUrls: ['./todos-shell.component.css']
 })
