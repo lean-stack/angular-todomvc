@@ -5,7 +5,11 @@
   "projects": {
     "angular-todomvc": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "prefix": ""
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
