@@ -39,6 +39,11 @@ export class TodosItemComponent implements OnInit {
   }
 
   endEdit() {
+    // Already left editmode via blur
+    if (!this.editMode) {
+      return;
+    }
+
     console.log('TODO: delegate mutating of data to central state store');
     this.todo.title = this.editText;
     this.editMode = false;
