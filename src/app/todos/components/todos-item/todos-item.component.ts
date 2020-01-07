@@ -37,4 +37,12 @@ export class TodosItemComponent implements OnInit {
     this.editMode = true;
     this.editText = this.todo.title;
   }
+
+  endEdit() {
+    this.editMode = false;
+  }
+
+  cancelEdit() {
+    this.editMode = false;
+  }
 }
