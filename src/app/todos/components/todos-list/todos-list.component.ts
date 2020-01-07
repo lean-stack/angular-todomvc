@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 
 @Component({
@@ -8,12 +8,12 @@ import {Todo} from '../../models/todo';
 })
 export class TodosListComponent implements OnInit {
 
-  todo: Todo;
+  @Input()
+  todos: Todo[];
 
   constructor() { }
 
   ngOnInit() {
-    this.todo = { id: 17, title: 'Template Syntax', completed: false };
   }
 
 }
