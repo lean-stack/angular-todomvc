@@ -6,6 +6,7 @@
   </div>
   <input #editFld class="edit"
          [value]="editText" (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()"
+         (blur)="endEdit()"
          (change)="editText = editFld.value"
   >
 </li>
