@@ -12,6 +12,7 @@ export class TodosItemComponent implements OnInit {
 
   // Component state
   editMode = false;
+  editText = '';
 
   constructor() { }
 
@@ -34,5 +35,6 @@ export class TodosItemComponent implements OnInit {
 
   beginEdit() {
     this.editMode = true;
+    this.editText = this.todo.title;
   }
 }
