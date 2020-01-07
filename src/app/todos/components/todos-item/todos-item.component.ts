@@ -15,10 +15,6 @@ export class TodosItemComponent implements OnInit {
   editMode = false;
   editText = '';
 
-  // View elements
-  @ViewChild('editFld', { static: true })
-  editFld: ElementRef<HTMLInputElement>;
-
   constructor() { }
 
   ngOnInit() {
@@ -39,9 +35,6 @@ export class TodosItemComponent implements OnInit {
   beginEdit() {
     this.editMode = true;
     this.editText = this.todo.title;
-
-    // TODO: gaining focus via timeout. Better way: custom directive
-    setTimeout(() => { this.editFld.nativeElement.focus(); }, 0);
   }
 
   endEdit() {

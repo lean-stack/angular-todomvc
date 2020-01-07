@@ -5,6 +5,7 @@
     <button class="destroy" (click)="destroyItem()"></button>
   </div>
   <input #editFld class="edit"
+         [focusOn]="editMode"
          [value]="editText" (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()"
          (blur)="endEdit()"
          (change)="editText = editFld.value"
