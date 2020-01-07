@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Todo} from '../../models/todo';
 
 @Component({
   selector: 'todos-item',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodosItemComponent implements OnInit {
 
+  todo: Todo;
+
   constructor() { }
 
   ngOnInit() {
+    this.todo = { id: 17, title: 'Template Syntax', completed: false };
   }
 
 }
