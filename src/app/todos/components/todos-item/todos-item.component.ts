@@ -23,4 +23,9 @@ export class TodosItemComponent implements OnInit {
     console.log('TODO: delegate mutating of data to central state store');
     this.todo.completed = !this.todo.completed;
   }
+
+  destroyItem() {
+    // TODO: natürlich können wir uns nicht selbst löschen. Nicht nur das Todo muss "weg", auch die Komponente ;-)
+    console.log('TODO: delegate deleting of todo to central state store');
+  }
 }
