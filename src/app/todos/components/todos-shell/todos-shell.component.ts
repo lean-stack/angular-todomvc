@@ -12,4 +12,7 @@ export class TodosShellComponent implements OnInit {
   ngOnInit() {
   }
 
+  createTodo(title: string) {
+    console.log(`Creating todo >${title}<.`);
+  }
 }
