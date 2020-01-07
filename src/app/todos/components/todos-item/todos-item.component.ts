@@ -10,6 +10,9 @@ export class TodosItemComponent implements OnInit {
 
   todo: Todo;
 
+  // Component state
+  editMode = false;
+
   constructor() { }
 
   ngOnInit() {
@@ -27,5 +30,9 @@ export class TodosItemComponent implements OnInit {
   destroyItem() {
     // TODO: natürlich können wir uns nicht selbst löschen. Nicht nur das Todo muss "weg", auch die Komponente ;-)
     console.log('TODO: delegate deleting of todo to central state store');
+  }
+
+  beginEdit() {
+    this.editMode = true;
   }
 }
