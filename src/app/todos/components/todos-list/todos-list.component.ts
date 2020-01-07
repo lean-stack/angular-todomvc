@@ -16,4 +16,7 @@ export class TodosListComponent implements OnInit {
   ngOnInit() {
   }
 
+  todoIdentFn(todo: Todo) {
+    return todo.id;
+  }
 }
