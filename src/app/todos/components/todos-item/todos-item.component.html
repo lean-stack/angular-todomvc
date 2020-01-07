@@ -4,5 +4,8 @@
     <label (dblclick)="beginEdit()">{{ todo.title }}</label>
     <button class="destroy" (click)="destroyItem()"></button>
   </div>
-  <input class="edit" [value]="editText" (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()">
+  <input class="edit"
+         [value]="editText" (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()"
+         (change)="editText = $event.target.value"
+  >
 </li>

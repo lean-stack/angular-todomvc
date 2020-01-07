@@ -39,6 +39,8 @@ export class TodosItemComponent implements OnInit {
   }
 
   endEdit() {
+    console.log('TODO: delegate mutating of data to central state store');
+    this.todo.title = this.editText;
     this.editMode = false;
   }
 
