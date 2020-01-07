@@ -53,6 +53,7 @@ export class TodosItemComponent implements OnInit {
     if (this.editText.trim().length === 0) {
       console.log('TODO: delegate deleting of todo to central state store');
     } else {
+      console.log('TODO: trim entered text')
       console.log('TODO: delegate mutating of data to central state store');
       this.todo.title = this.editText;
     }
