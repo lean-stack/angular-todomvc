@@ -50,8 +50,12 @@ export class TodosItemComponent implements OnInit {
       return;
     }
 
-    console.log('TODO: delegate mutating of data to central state store');
-    this.todo.title = this.editText;
+    if (this.editText.trim().length === 0) {
+      console.log('TODO: delegate deleting of todo to central state store');
+    } else {
+      console.log('TODO: delegate mutating of data to central state store');
+      this.todo.title = this.editText;
+    }
     this.editMode = false;
   }
 
