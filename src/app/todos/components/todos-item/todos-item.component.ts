@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Todo} from '../../models/todo';
 
 @Component({
@@ -14,6 +14,10 @@ export class TodosItemComponent implements OnInit {
   editMode = false;
   editText = '';
 
+  // View elements
+  @ViewChild('editFld', { static: true })
+  editFld: ElementRef<HTMLInputElement>;
+
   constructor() { }
 
   ngOnInit() {
@@ -22,8 +26,7 @@ export class TodosItemComponent implements OnInit {
 
   toggleCompletedState() {
     // TODO: Lokale Änderungen hier müssen an ein Backend weitergegeben werden.
-    // Besser noch: die Komponente sollte das Todo nur "lesen". Änderungen
-    // an zentraler Stelle druchführen
+    // Besser noch: die Komponente sollte das Item nur "lesen". Änderungen bitte an zentraler Stelle druchführen
     console.log('TODO: delegate mutating of data to central state store');
     this.todo.completed = !this.todo.completed;
   }
@@ -36,6 +39,9 @@ export class TodosItemComponent implements OnInit {
   beginEdit() {
     this.editMode = true;
     this.editText = this.todo.title;
+
+    // TODO: gaining focus via timeout. Better way: custom directive
+    setTimeout(() => { this.editFld.nativeElement.focus(); }, 0);
   }
 
   endEdit() {
