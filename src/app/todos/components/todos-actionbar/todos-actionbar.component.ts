@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Todo} from '../../models/todo';
+import {TodosStateService} from '../../state/todos-state.service';
 
 @Component({
   selector: 'todos-actionbar',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodosActionbarComponent implements OnInit {
 
-  constructor() { }
+  todos: Todo[];
+
+  constructor(private state: TodosStateService) { }
 
   ngOnInit() {
+    this.todos = this.state.todos;
   }
-
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Todo} from '../../models/todo';
+import {TodosStateService} from '../../state/todos-state.service';
 
 @Component({
   selector: 'todos-main',
@@ -10,13 +11,10 @@ export class TodosMainComponent implements OnInit {
 
   todos: Todo[];
 
-  constructor() { }
+  constructor(private state: TodosStateService) { }
 
   ngOnInit() {
-    this.todos = [
-      { id: 1, title: 'Template Syntax', completed: true },
-      { id: 2, title: 'Directives', completed: false }
-    ];
+    this.todos = this.state.todos;
   }
 
 }
