@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Todo} from '../../models/todo';
 
 @Component({
@@ -8,6 +8,7 @@ import {Todo} from '../../models/todo';
 })
 export class TodosItemComponent implements OnInit {
 
+  @Input()
   todo: Todo;
 
   // Component state
@@ -21,7 +22,6 @@ export class TodosItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.todo = { id: 17, title: 'Template Syntax', completed: false };
   }
 
   toggleCompletedState() {
