@@ -1,6 +1,6 @@
 <footer *ngIf="todos.length > 0" class="footer">
   <!-- This should be `0 items left` by default -->
-  <span class="todo-count"><strong>0</strong> item left</span>
+  <span class="todo-count"><strong>{{ activeCount }}</strong> item{{ activeCount !== 1 ? 's' : '' }} left</span>
   <!-- Remove this if you don't implement routing -->
   <ul class="filters">
     <li>
@@ -14,5 +14,5 @@
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->
-  <button class="clear-completed">Clear completed</button>
+  <button *ngIf="hasCompletedTodos" class="clear-completed" (click)="clearCompletedTodos()">Clear completed</button>
 </footer>

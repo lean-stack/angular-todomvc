@@ -1,5 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Todo} from '../../models/todo';
+import {StoreService} from '../../state/store.service';
 
 @Component({
   selector: 'todos-item',
@@ -15,21 +16,17 @@ export class TodosItemComponent implements OnInit {
   editMode = false;
   editText = '';
 
-  constructor() { }
+  constructor(private store: StoreService) { }
 
   ngOnInit() {
   }
 
   toggleCompletedState() {
-    // TODO: Lokale Änderungen hier müssen an ein Backend weitergegeben werden.
-    // Besser noch: die Komponente sollte das Item nur "lesen". Änderungen bitte an zentraler Stelle druchführen
-    console.log('TODO: delegate mutating of data to central state store');
-    this.todo.completed = !this.todo.completed;
+    this.store.toggleTodoCompletedState(this.todo);
   }
 
   destroyItem() {
-    // TODO: natürlich können wir uns nicht selbst löschen. Nicht nur das Todo muss "weg", auch die Komponente ;-)
-    console.log('TODO: delegate deleting of todo to central state store');
+    this.store.destroyTodo(this.todo);
   }
 
   beginEdit() {
@@ -44,11 +41,10 @@ export class TodosItemComponent implements OnInit {
     }
 
     if (this.editText.trim().length === 0) {
-      console.log('TODO: delegate deleting of todo to central state store');
+      this.store.destroyTodo(this.todo);
     } else {
-      console.log('TODO: trim entered text')
-      console.log('TODO: delegate mutating of data to central state store');
-      this.todo.title = this.editText;
+      console.log('TODO: trim entered text');
+      this.store.updateTodoTitle(this.todo, this.editText);
     }
     this.editMode = false;
   }
