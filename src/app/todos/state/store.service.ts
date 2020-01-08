@@ -25,4 +25,26 @@ export class StoreService {
     const todo: Todo = { id: nextId, title, completed: false };
     this.state.todos.push(todo);
   }
+
+  toggleTodoCompletedState(todo: Todo) {
+    todo.completed = !todo.completed;
+  }
+
+  updateTodoTitle(todo: Todo, title: string) {
+    todo.title = title;
+  }
+
+  destroyTodo(todo: Todo) {
+    const ix = this.state.todos.indexOf(todo);
+    this.state.todos.splice(ix, 1);
+  }
+
+  setAllCompletedStates(completed: boolean) {
+    this.state.todos.forEach(t => t.completed = completed);
+  }
+
+  destroyAllCompletedTodos() {
+    // TODO: change data flow to an immutable strategy
+    this.state.todos.forEach(t => t.completed && this.destroyTodo(t));
+  }
 }
