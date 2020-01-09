@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilterService} from '../../services/visibility-filter.service';
@@ -9,7 +9,7 @@ import {VisibilityFilter} from '../../models/visibility-filter.enum';
   templateUrl: './todos-main.component.html',
   styleUrls: ['./todos-main.component.css']
 })
-export class TodosMainComponent implements OnInit {
+export class TodosMainComponent implements OnInit, DoCheck {
 
   todos: Todo[];
   filteredTodos: Todo[];
@@ -26,6 +26,13 @@ export class TodosMainComponent implements OnInit {
     this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
     });
+  }
+
+  ngDoCheck(): void {
+    if (this.todos !== this.store.state.todos) {
+      this.todos = this.store.state.todos;
+      this.mapFilter();
+    }
   }
 
   syncAllStates() {
