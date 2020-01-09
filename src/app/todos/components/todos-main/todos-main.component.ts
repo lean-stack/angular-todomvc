@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, DoCheck, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilterService} from '../../services/visibility-filter.service';
@@ -20,12 +20,17 @@ export class TodosMainComponent implements OnInit, DoCheck {
     return this.todos.findIndex(t => !t.completed) === -1;
   }
 
-  constructor(private store: StoreService, private visibilityFilterService: VisibilityFilterService) { }
+  constructor(
+    private store: StoreService,
+    private visibilityFilterService: VisibilityFilterService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.todos = this.store.state.todos;
     this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -33,6 +38,7 @@ export class TodosMainComponent implements OnInit, DoCheck {
     if (this.todos !== this.store.state.todos) {
       this.todos = this.store.state.todos;
       this.mapFilter();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
