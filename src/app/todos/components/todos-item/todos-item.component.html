@@ -4,10 +4,10 @@
     <label (dblclick)="beginEdit()">{{ todo.title }}</label>
     <button class="destroy" (click)="destroyItem()"></button>
   </div>
-  <input #editFld class="edit"
+  <input class="edit"
+         [(bindTo)]="editText"
          [focusOn]="editMode"
-         [value]="editText" (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()"
+         (keyup.enter)="endEdit()" (keyup.escape)="cancelEdit()"
          (blur)="endEdit()"
-         (change)="editText = editFld.value"
   >
 </li>
