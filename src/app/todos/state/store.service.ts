@@ -40,11 +40,11 @@ export class StoreService {
   }
 
   setAllCompletedStates(completed: boolean) {
-    this.state.todos.forEach(t => {
+    this.state.todos = this.state.todos.map(t => {
       if (t.completed !== completed) {
-        this.persistence.update(t.id, { completed });
-        t.completed = completed;
+        t = this.persistence.update(t.id, { completed });
       }
+      return t;
     });
   }
 
