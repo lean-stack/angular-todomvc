@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
@@ -29,7 +29,11 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
     return this.todos.findIndex(t => t.completed) !== -1;
   }
 
-  constructor(private store: StoreService, private visibilityFilterService: VisibilityFilterService) { }
+  constructor(
+    private store: StoreService,
+    private visibilityFilterService: VisibilityFilterService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.todos = this.store.state.todos;
@@ -42,6 +46,7 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
     if (this.todos !== this.store.state.todos) {
       this.todos = this.store.state.todos;
       this.mapFilter();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
