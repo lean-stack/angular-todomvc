@@ -31,7 +31,6 @@ export class TodosActionbarComponent implements OnInit , OnDestroy {
   constructor(private store: StoreService, private visibilityFilterService: VisibilityFilterService) { }
 
   ngOnInit() {
-    this.mapFilter();
     this.todos = this.store.state.todos;
     this.subscription = this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();

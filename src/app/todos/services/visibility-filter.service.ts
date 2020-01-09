@@ -9,7 +9,7 @@ import {ReplaySubject, Subject} from 'rxjs';
 })
 export class VisibilityFilterService {
 
-  filterChanged = new Subject();
+  filterChanged = new ReplaySubject();
 
   constructor(private store: StoreService, private location: Location) {
     location.subscribe((ev) => {

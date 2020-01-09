@@ -23,7 +23,6 @@ export class TodosMainComponent implements OnInit {
 
   ngOnInit() {
     this.todos = this.store.state.todos;
-    this.mapFilter();
     this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
     });
