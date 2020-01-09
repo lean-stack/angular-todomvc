@@ -43,8 +43,7 @@ export class TodosItemComponent implements OnInit {
     if (this.editText.trim().length === 0) {
       this.store.destroyTodo(this.todo);
     } else {
-      console.log('TODO: trim entered text');
-      this.store.updateTodoTitle(this.todo, this.editText);
+      this.store.updateTodoTitle(this.todo, this.editText.trim());
     }
     this.editMode = false;
   }
