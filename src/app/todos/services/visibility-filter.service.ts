@@ -2,13 +2,14 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {StoreService} from '../state/store.service';
 import {VisibilityFilter} from '../models/visibility-filter.enum';
+import {ReplaySubject, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VisibilityFilterService {
 
-  filterChanged = new EventEmitter();
+  filterChanged = new Subject();
 
   constructor(private store: StoreService, private location: Location) {
     location.subscribe((ev) => {
@@ -21,7 +22,7 @@ export class VisibilityFilterService {
   initialize() {
     const currentPath = this.location.path();
     this.store.state.visibility = this.mapPathToFilter(currentPath);
-    this.filterChanged.emit();
+    this.filterChanged.next();
   }
 
   private mapPathToFilter(path: string): VisibilityFilter {
