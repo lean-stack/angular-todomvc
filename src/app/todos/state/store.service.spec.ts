@@ -8,14 +8,15 @@ describe('StoreService', () => {
   let service: StoreService;
 
   beforeEach(() => {
+    localStorage.clear();
     service = TestBed.get(StoreService);
   });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   it('should delete all completed todos', () => {
-    localStorage.clear();
     service.createTodo('One');
     service.createTodo('Two');
     service.createTodo('Three');

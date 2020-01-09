@@ -50,10 +50,12 @@ export class StoreService {
 
   destroyAllCompletedTodos() {
     // TODO: change data flow to an immutable strategy
-    this.state.todos.forEach(t => {
+    for (let ix = this.state.todos.length - 1; ix >= 0; --ix) {
+      const t = this.state.todos[ix];
       if (t.completed) {
-        this.destroyTodo(t);
+        this.persistence.remove(t.id);
+        this.state.todos.splice(ix, 1);
       }
-    });
+    }
   }
 }
