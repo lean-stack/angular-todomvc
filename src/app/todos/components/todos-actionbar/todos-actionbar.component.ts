@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
@@ -8,7 +8,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'todos-actionbar',
   templateUrl: './todos-actionbar.component.html',
-  styleUrls: ['./todos-actionbar.component.css']
+  styleUrls: ['./todos-actionbar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
 
