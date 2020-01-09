@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './todos-actionbar.component.html',
   styleUrls: ['./todos-actionbar.component.css']
 })
-export class TodosActionbarComponent implements OnInit , OnDestroy {
+export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
 
   todos: Todo[];
 
@@ -35,6 +35,13 @@ export class TodosActionbarComponent implements OnInit , OnDestroy {
     this.subscription = this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
     });
+  }
+
+  ngDoCheck(): void {
+    if (this.todos !== this.store.state.todos) {
+      this.todos = this.store.state.todos;
+      this.mapFilter();
+    }
   }
 
   clearCompletedTodos() {
