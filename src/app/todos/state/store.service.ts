@@ -40,12 +40,12 @@ export class StoreService {
   }
 
   setAllCompletedStates(completed: boolean) {
-    this.state.todos = this.state.todos.map(t => {
+    for (let ix = 0; ix < this.state.todos.length; ++ix) {
+      const t = this.state.todos[ix];
       if (t.completed !== completed) {
-        t = this.persistence.update(t.id, { completed });
+        this.state.todos[ix] = this.persistence.update(t.id, { completed });
       }
-      return t;
-    });
+    }
   }
 
   destroyAllCompletedTodos() {
