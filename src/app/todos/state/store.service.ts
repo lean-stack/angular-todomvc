@@ -24,38 +24,26 @@ export class StoreService {
   }
 
   toggleTodoCompletedState(todo: Todo) {
-    this.persistence.update(todo.id, { completed: !todo.completed});
-    todo.completed = !todo.completed;
+    const updatedTodo = this.persistence.update(todo.id, { completed: !todo.completed});
+    this.state.todos = this.state.todos.map(t => t.id === updatedTodo.id ? updatedTodo : t);
   }
 
   updateTodoTitle(todo: Todo, title: string) {
-    this.persistence.update(todo.id, { title });
-    todo.title = title;
+    const updatedTodo = this.persistence.update(todo.id, { title });
+    this.state.todos = this.state.todos.map(t => t.id === updatedTodo.id ? updatedTodo : t);
   }
 
   destroyTodo(todo: Todo) {
     this.persistence.remove(todo.id);
-    const ix = this.state.todos.indexOf(todo);
-    this.state.todos.splice(ix, 1);
+    this.state.todos = this.state.todos.filter(t => t.id !== todo.id);
   }
 
   setAllCompletedStates(completed: boolean) {
-    for (let ix = 0; ix < this.state.todos.length; ++ix) {
-      const t = this.state.todos[ix];
-      if (t.completed !== completed) {
-        this.state.todos[ix] = this.persistence.update(t.id, { completed });
-      }
-    }
+    this.state.todos = this.state.todos.map(t => t.completed === completed ? t : this.persistence.update(t.id, { completed }));
   }
 
   destroyAllCompletedTodos() {
-    // TODO: change data flow to an immutable strategy
-    for (let ix = this.state.todos.length - 1; ix >= 0; --ix) {
-      const t = this.state.todos[ix];
-      if (t.completed) {
-        this.persistence.remove(t.id);
-        this.state.todos.splice(ix, 1);
-      }
-    }
+    this.state.todos.forEach(t => t.completed && this.persistence.remove(t.id));
+    this.state.todos = this.state.todos.filter(t => !t.completed);
   }
 }
