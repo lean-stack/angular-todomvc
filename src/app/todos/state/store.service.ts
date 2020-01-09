@@ -20,7 +20,7 @@ export class StoreService {
 
   createTodo(title: string) {
     const todo = this.persistence.create(title);
-    this.state.todos.push(todo);
+    this.state.todos = [ ... this.state.todos, todo ];
   }
 
   toggleTodoCompletedState(todo: Todo) {
