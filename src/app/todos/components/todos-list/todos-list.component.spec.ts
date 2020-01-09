@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodosListComponent } from './todos-list.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('TodosListComponent', () => {
   let component: TodosListComponent;
@@ -8,7 +9,8 @@ describe('TodosListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodosListComponent ]
+      declarations: [ TodosListComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
