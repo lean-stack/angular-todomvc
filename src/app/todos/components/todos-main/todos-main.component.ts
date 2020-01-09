@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DoCheck, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilterService} from '../../services/visibility-filter.service';
@@ -7,7 +7,8 @@ import {VisibilityFilter} from '../../models/visibility-filter.enum';
 @Component({
   selector: 'todos-main',
   templateUrl: './todos-main.component.html',
-  styleUrls: ['./todos-main.component.css']
+  styleUrls: ['./todos-main.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosMainComponent implements OnInit, DoCheck {
 
