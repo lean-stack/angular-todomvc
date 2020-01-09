@@ -39,6 +39,7 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
     this.todos = this.store.state.todos;
     this.subscription = this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
+      this.changeDetectorRef.markForCheck();
     });
   }
 
