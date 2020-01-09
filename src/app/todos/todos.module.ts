@@ -6,6 +6,7 @@ import {TodosActionbarComponent} from './components/todos-actionbar/todos-action
 import {TodosListComponent} from './components/todos-list/todos-list.component';
 import {TodosItemComponent} from './components/todos-item/todos-item.component';
 import {SharedModule} from '../shared/shared.module';
+import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,10 @@ import {SharedModule} from '../shared/shared.module';
   ],
   imports: [
     SharedModule
+  ],
+  providers: [
+    Location,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   exports: [TodosShellComponent]
 })

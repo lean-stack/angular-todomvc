@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {StoreService} from '../../state/store.service';
+import {VisibilityFilterService} from '../../services/visibility-filter.service';
 
 @Component({
   selector: 'todos-shell',
@@ -8,9 +9,10 @@ import {StoreService} from '../../state/store.service';
 })
 export class TodosShellComponent implements OnInit {
 
-  constructor(private store: StoreService) { }
+  constructor(private store: StoreService, private visibilityFilterService: VisibilityFilterService) { }
 
   ngOnInit() {
+    this.visibilityFilterService.initialize();
   }
 
   createTodo(title: string) {
