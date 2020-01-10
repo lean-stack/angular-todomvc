@@ -26,13 +26,18 @@ export class TodosActionbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.hasTodos$ = this.store.state$.pipe( map(state => state.todos.length > 0));
+    const todos$ = this.store.select(s => s.todos);
+
+    this.hasTodos$ = this.store.selectFrom(todos$, todos => todos.length > 1);
+
     this.allSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.All ));
     this.activeSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Active ));
     this.completedSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Completed ));
     this.activeCount$ = this.store.select(
-      s =>
-        s.todos.reduce((count, t) => t.completed ? count : count + 1, 0)
+      s => {
+        console.log('Calculating');
+        return s.todos.reduce((count, t) => t.completed ? count : count + 1, 0);
+      }
     );
     this.activeCount$.subscribe(c => console.log(c));
     this.hasCompletedTodos$ = this.store.state$.pipe( map(state => state.todos.findIndex(t => t.completed) !== -1));

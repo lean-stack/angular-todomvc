@@ -25,8 +25,12 @@ export class StoreService {
     this.state$ = this.stateSource.asObservable();
   }
 
-  select<T>(selectorFn: (state: TodosState) => T): Observable<T> {
-    return this.state$.pipe( map(selectorFn), distinctUntilChanged() );
+  select<T>(selectFn: (state: TodosState) => T): Observable<T> {
+    return this.state$.pipe( map(selectFn), distinctUntilChanged() );
+  }
+
+  selectFrom<TIn, TOut>(inStream$: Observable<TIn>, selectFn: (data: TIn) => TOut): Observable<TOut> {
+    return inStream$.pipe( map(selectFn), distinctUntilChanged() );
   }
 
   createTodo(title: string) {
