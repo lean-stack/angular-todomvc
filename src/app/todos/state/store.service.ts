@@ -3,8 +3,8 @@ import {TodosState} from './todos-state';
 import {VisibilityFilter} from '../models/visibility-filter.enum';
 import {Todo} from '../models/todo';
 import {LocalPersistenceService} from '../services/local-persistence.service';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class StoreService {
   }
 
   select<T>(selectorFn: (state: TodosState) => T): Observable<T> {
-    return this.state$.pipe( map(selectorFn) );
+    return this.state$.pipe( map(selectorFn), distinctUntilChanged() );
   }
 
   createTodo(title: string) {
