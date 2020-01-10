@@ -22,14 +22,14 @@ export class TodosMainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.hasTodos$ = this.store.state.todos$.pipe( map(todos => todos.length > 0));
+    this.hasTodos$ = this.store.state$.pipe( map(state => state.todos.length > 0));
 
-    this.store.state.todos$.pipe( map(
-      todos => todos.findIndex(t => !t.completed) === -1)
+    this.store.state$.pipe( map(
+      state => state.todos.findIndex(t => !t.completed) === -1)
     ).subscribe(allCompleted => this.allTodosAreCompleted$.next(allCompleted));
 
-    this.filteredTodos$ = combineLatest(this.store.state.todos$, this.store.state.visibility$).pipe(
-      map(([todos, visibility]) => {
+    this.filteredTodos$ = this.store.state$.pipe(
+      map( ({todos, visibility}) => {
         if (visibility === VisibilityFilter.All) {
           return todos;
         } else {

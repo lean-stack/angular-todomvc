@@ -26,14 +26,14 @@ export class TodosActionbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.hasTodos$ = this.store.state.todos$.pipe( map(todos => todos.length > 0));
-    this.allSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.All ));
-    this.activeSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.Active ));
-    this.completedSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.Completed ));
-    this.activeCount$ = this.store.state.todos$.pipe( map(
-      todos => todos.reduce((count, t) => t.completed ? count : count + 1, 0)
+    this.hasTodos$ = this.store.state$.pipe( map(state => state.todos.length > 0));
+    this.allSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.All ));
+    this.activeSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Active ));
+    this.completedSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Completed ));
+    this.activeCount$ = this.store.state$.pipe( map(
+      state => state.todos.reduce((count, t) => t.completed ? count : count + 1, 0)
     ));
-    this.hasCompletedTodos$ = this.store.state.todos$.pipe( map(todos => todos.findIndex(t => t.completed) !== -1));
+    this.hasCompletedTodos$ = this.store.state$.pipe( map(state => state.todos.findIndex(t => t.completed) !== -1));
   }
 
   clearCompletedTodos() {
