@@ -1,7 +1,8 @@
 import {Todo} from '../models/todo';
 import {VisibilityFilter} from '../models/visibility-filter.enum';
+import {Observable} from 'rxjs';
 
 export interface TodosState {
-  todos: Todo[];
-  visibility: VisibilityFilter;
+  todos$: Observable<Todo[]>;
+  visibility$: Observable<VisibilityFilter>;
 }
