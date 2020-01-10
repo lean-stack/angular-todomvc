@@ -1,9 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'todos-input',
   templateUrl: './todos-input.component.html',
-  styleUrls: ['./todos-input.component.css']
+  styleUrls: ['./todos-input.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosInputComponent implements OnInit {
 
