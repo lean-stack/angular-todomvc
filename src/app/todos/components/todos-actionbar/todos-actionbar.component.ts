@@ -30,9 +30,11 @@ export class TodosActionbarComponent implements OnInit {
     this.allSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.All ));
     this.activeSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Active ));
     this.completedSelected$ = this.store.state$.pipe( map( state => state.visibility === VisibilityFilter.Completed ));
-    this.activeCount$ = this.store.state$.pipe( map(
-      state => state.todos.reduce((count, t) => t.completed ? count : count + 1, 0)
-    ));
+    this.activeCount$ = this.store.select(
+      s =>
+        s.todos.reduce((count, t) => t.completed ? count : count + 1, 0)
+    );
+    this.activeCount$.subscribe(c => console.log(c));
     this.hasCompletedTodos$ = this.store.state$.pipe( map(state => state.todos.findIndex(t => t.completed) !== -1));
   }
 

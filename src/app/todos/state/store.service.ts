@@ -4,6 +4,7 @@ import {VisibilityFilter} from '../models/visibility-filter.enum';
 import {Todo} from '../models/todo';
 import {LocalPersistenceService} from '../services/local-persistence.service';
 import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class StoreService {
     };
     this.stateSource = new BehaviorSubject<TodosState>(initialState);
     this.state$ = this.stateSource.asObservable();
+  }
+
+  select<T>(selectorFn: (state: TodosState) => T): Observable<T> {
+    return this.state$.pipe( map(selectorFn) );
   }
 
   createTodo(title: string) {
