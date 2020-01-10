@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, Input, OnChanges, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
-import {VisibilityFilterService} from '../../services/visibility-filter.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'todos-main',
@@ -10,41 +11,35 @@ import {VisibilityFilter} from '../../models/visibility-filter.enum';
   styleUrls: ['./todos-main.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodosMainComponent implements OnInit, OnChanges {
+export class TodosMainComponent implements OnInit {
 
-  @Input()
-  todos: Todo[];
-
-  filteredTodos: Todo[];
-  allTodosAreCompleted: boolean;
+  hasTodos$: Observable<boolean>;
+  filteredTodos$: Observable<Todo[]>;
+  allTodosAreCompleted$ = new BehaviorSubject<boolean>(false)
 
   constructor(
     private store: StoreService,
-    private visibilityFilterService: VisibilityFilterService,
-    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
-  ngOnChanges(): void {
-    this.allTodosAreCompleted = this.todos.findIndex(t => !t.completed) === -1;
-    this.mapFilter();
-  }
-
   ngOnInit() {
-    this.visibilityFilterService.filterChanged.subscribe(() => {
-      this.mapFilter();
-      this.changeDetectorRef.markForCheck();
-    });
+    this.hasTodos$ = this.store.state.todos$.pipe( map(todos => todos.length > 0));
+
+    this.store.state.todos$.pipe( map(
+      todos => todos.findIndex(t => !t.completed) === -1)
+    ).subscribe(allCompleted => this.allTodosAreCompleted$.next(allCompleted));
+
+    this.filteredTodos$ = combineLatest(this.store.state.todos$, this.store.state.visibility$).pipe(
+      map(([todos, visibility]) => {
+        if (visibility === VisibilityFilter.All) {
+          return todos;
+        } else {
+          return todos.filter(t => t.completed === (visibility === VisibilityFilter.Completed));
+        }
+      })
+    );
   }
 
   syncAllStates() {
-    this.allTodosAreCompleted ? this.store.setAllCompletedStates(false) : this.store.setAllCompletedStates(true);
-  }
-
-  private mapFilter() {
-    if (this.store.state.visibility === VisibilityFilter.All) {
-      this.filteredTodos = this.todos;
-    } else {
-      this.filteredTodos = this.todos.filter(t => t.completed === (this.store.state.visibility === VisibilityFilter.Completed));
-    }
+    this.store.setAllCompletedStates(!this.allTodosAreCompleted$.value);
   }
 }

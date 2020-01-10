@@ -1,5 +1,5 @@
-<section *ngIf="todos.length > 0" class="main">
-  <input id="toggle-all" class="toggle-all" type="checkbox" [checked]="allTodosAreCompleted" (change)="syncAllStates()">
+<section *ngIf="hasTodos$ | async" class="main">
+  <input id="toggle-all" class="toggle-all" type="checkbox" [checked]="allTodosAreCompleted$ | async" (change)="syncAllStates()">
   <label for="toggle-all">Mark all as complete</label>
-  <todos-list [todos]="filteredTodos"></todos-list>
+  <todos-list [todos]="filteredTodos$ | async"></todos-list>
 </section>

@@ -1,28 +1,24 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {StoreService} from '../state/store.service';
 import {VisibilityFilter} from '../models/visibility-filter.enum';
-import {ReplaySubject, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VisibilityFilterService {
 
-  filterChanged = new ReplaySubject();
-
   constructor(private store: StoreService, private location: Location) {
     location.subscribe((ev) => {
       if (ev.type === 'popstate') {
-        this.initialize();
+        this.setVisibility();
       }
     });
   }
 
-  initialize() {
+  setVisibility() {
     const currentPath = this.location.path();
-    this.store.state.visibility = this.mapPathToFilter(currentPath);
-    this.filterChanged.next();
+    this.store.setVisibilty(this.mapPathToFilter(currentPath));
   }
 
   private mapPathToFilter(path: string): VisibilityFilter {

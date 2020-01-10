@@ -1,9 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
-import {Todo} from '../../models/todo';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
-import {VisibilityFilterService} from '../../services/visibility-filter.service';
-import {Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'todos-actionbar',
@@ -11,54 +10,33 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./todos-actionbar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
+export class TodosActionbarComponent implements OnInit {
 
-  todos: Todo[];
+  hasTodos$: Observable<boolean>;
 
-  allSelected = false;
-  activeSelected = false;
-  completedSelected = false;
+  allSelected$: Observable<boolean>;
+  activeSelected$: Observable<boolean>;
+  completedSelected$: Observable<boolean>;
 
-  activeCount: number;
-  hasCompletedTodos: boolean;
-
-  private filterChanges: Subscription;
+  activeCount$: Observable<number>;
+  hasCompletedTodos$: Observable<boolean>;
 
   constructor(
     private store: StoreService,
-    private visibilityFilterService: VisibilityFilterService,
-    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.todos = this.store.state.todos;
-    this.filterChanges = this.visibilityFilterService.filterChanged.subscribe(() => {
-      this.mapFilter();
-      this.changeDetectorRef.markForCheck();
-    });
-  }
-
-  ngDoCheck(): void {
-    if (this.todos !== this.store.state.todos) {
-      this.todos = this.store.state.todos;
-      this.activeCount = this.todos.reduce((count, t) => t.completed ? count : count + 1, 0);
-      this.hasCompletedTodos = this.todos.findIndex(t => t.completed) !== -1;
-      this.mapFilter();
-      this.changeDetectorRef.markForCheck();
-    }
+    this.hasTodos$ = this.store.state.todos$.pipe( map(todos => todos.length > 0));
+    this.allSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.All ));
+    this.activeSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.Active ));
+    this.completedSelected$ = this.store.state.visibility$.pipe( map( visibility => visibility === VisibilityFilter.Completed ));
+    this.activeCount$ = this.store.state.todos$.pipe( map(
+      todos => todos.reduce((count, t) => t.completed ? count : count + 1, 0)
+    ));
+    this.hasCompletedTodos$ = this.store.state.todos$.pipe( map(todos => todos.findIndex(t => t.completed) !== -1));
   }
 
   clearCompletedTodos() {
     this.store.destroyAllCompletedTodos();
-  }
-
-  ngOnDestroy() {
-    this.filterChanges.unsubscribe();
-  }
-
-  private mapFilter() {
-    this.allSelected = this.store.state.visibility === VisibilityFilter.All;
-    this.activeSelected = this.store.state.visibility === VisibilityFilter.Active;
-    this.completedSelected = this.store.state.visibility === VisibilityFilter.Completed;
   }
 }
