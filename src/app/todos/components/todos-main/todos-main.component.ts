@@ -14,11 +14,7 @@ export class TodosMainComponent implements OnInit, DoCheck {
 
   todos: Todo[];
   filteredTodos: Todo[];
-
-  // Not the best practice. Better calculate once for any change. But when?
-  get allTodosAreCompleted() {
-    return this.todos.findIndex(t => !t.completed) === -1;
-  }
+  allTodosAreCompleted: boolean;
 
   constructor(
     private store: StoreService,
@@ -28,6 +24,7 @@ export class TodosMainComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.todos = this.store.state.todos;
+    this.allTodosAreCompleted = this.todos.findIndex(t => !t.completed) === -1;
     this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
       this.changeDetectorRef.markForCheck();
@@ -37,6 +34,7 @@ export class TodosMainComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     if (this.todos !== this.store.state.todos) {
       this.todos = this.store.state.todos;
+      this.allTodosAreCompleted = this.todos.findIndex(t => !t.completed) === -1;
       this.mapFilter();
       this.changeDetectorRef.markForCheck();
     }

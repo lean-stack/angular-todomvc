@@ -19,15 +19,10 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
   activeSelected = false;
   completedSelected = false;
 
-  private subscription: Subscription;
+  activeCount: number;
+  hasCompletedTodos: boolean;
 
-  // Not the best practice. Better calculate once for any change. But when?
-  get activeCount() {
-    return this.todos.reduce((count, t) => t.completed ? count : count + 1, 0);
-  }
-  get hasCompletedTodos() {
-    return this.todos.findIndex(t => t.completed) !== -1;
-  }
+  private filterChanges: Subscription;
 
   constructor(
     private store: StoreService,
@@ -37,7 +32,7 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
 
   ngOnInit() {
     this.todos = this.store.state.todos;
-    this.subscription = this.visibilityFilterService.filterChanged.subscribe(() => {
+    this.filterChanges = this.visibilityFilterService.filterChanged.subscribe(() => {
       this.mapFilter();
       this.changeDetectorRef.markForCheck();
     });
@@ -46,6 +41,8 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
   ngDoCheck(): void {
     if (this.todos !== this.store.state.todos) {
       this.todos = this.store.state.todos;
+      this.activeCount = this.todos.reduce((count, t) => t.completed ? count : count + 1, 0);
+      this.hasCompletedTodos = this.todos.findIndex(t => t.completed) !== -1;
       this.mapFilter();
       this.changeDetectorRef.markForCheck();
     }
@@ -56,7 +53,7 @@ export class TodosActionbarComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.filterChanges.unsubscribe();
   }
 
   private mapFilter() {
