@@ -15,31 +15,32 @@ export class TodosMainComponent implements OnInit {
 
   hasTodos$: Observable<boolean>;
   filteredTodos$: Observable<Todo[]>;
-  allTodosAreCompleted$ = new BehaviorSubject<boolean>(false)
+  allTodosAreCompleted$: Observable<boolean>;
+  private allCompleted = false;
 
   constructor(
     private store: StoreService,
   ) { }
 
   ngOnInit() {
-    this.hasTodos$ = this.store.state$.pipe( map(state => state.todos.length > 0));
+    const todos$ = this.store.select(s => s.todos);
+    this.hasTodos$ = this.store.selectFrom(todos$, todos => todos.length > 0);
+    this.allTodosAreCompleted$ = this.store.selectFrom(todos$, todos => todos.findIndex(t => !t.completed) === -1);
+    this.allTodosAreCompleted$.subscribe(v => this.allCompleted = v);
 
-    this.store.state$.pipe( map(
-      state => state.todos.findIndex(t => !t.completed) === -1)
-    ).subscribe(allCompleted => this.allTodosAreCompleted$.next(allCompleted));
-
-    this.filteredTodos$ = this.store.state$.pipe(
-      map( ({todos, visibility}) => {
+    this.filteredTodos$ = this.store.select(
+      ({todos, visibility}) => {
         if (visibility === VisibilityFilter.All) {
           return todos;
         } else {
           return todos.filter(t => t.completed === (visibility === VisibilityFilter.Completed));
         }
-      })
+      }
     );
+
   }
 
   syncAllStates() {
-    this.store.setAllCompletedStates(!this.allTodosAreCompleted$.value);
+    this.store.setAllCompletedStates(!this.allCompleted);
   }
 }

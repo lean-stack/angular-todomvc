@@ -12,7 +12,7 @@ import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 export class StoreService {
 
   private stateSource: BehaviorSubject<TodosState>;
-  state$: Observable<TodosState>;
+  private state$: Observable<TodosState>;
 
   private get todos() { return this.stateSource.value.todos; }
 
