@@ -6,6 +6,14 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {distinctUntilChanged, map, scan, shareReplay} from 'rxjs/operators';
 import {Action, ActionType} from './actions';
 
+const win = window as any;
+if (win.__REDUX_DEVTOOLS_EXTENSION__) {
+  win.devTools = win.__REDUX_DEVTOOLS_EXTENSION__.connect();
+} else {
+  win.devTools = { send: (type: string, state: TodosState) => {} };
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -60,6 +68,7 @@ export class StoreService {
         state = { ...state, visibility: action.filter };
         break;
     }
+    win.devTools.send(action.type, state);
     return state;
   };
 
