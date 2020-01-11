@@ -14,9 +14,7 @@ export class TodosActionbarComponent implements OnInit {
 
   hasTodos$: Observable<boolean>;
 
-  allSelected$: Observable<boolean>;
-  activeSelected$: Observable<boolean>;
-  completedSelected$: Observable<boolean>;
+  visibility$: Observable<number>;
 
   activeCount$: Observable<number>;
   hasCompletedTodos$: Observable<boolean>;
@@ -34,10 +32,7 @@ export class TodosActionbarComponent implements OnInit {
     this.hasCompletedTodos$ = this.store.selectFrom(todos$,
       todos => todos.findIndex(t => t.completed) !== -1);
 
-    const visibility$ = this.store.select(s => s.visibility);
-    this.allSelected$ = this.store.selectFrom(visibility$, visibility => visibility === VisibilityFilter.All );
-    this.activeSelected$ = this.store.selectFrom(visibility$, visibility => visibility === VisibilityFilter.Active );
-    this.completedSelected$ = this.store.selectFrom(visibility$, visibility => visibility === VisibilityFilter.Completed );
+    this.visibility$ = this.store.select(s => s.visibility);
   }
 
   clearCompletedTodos() {

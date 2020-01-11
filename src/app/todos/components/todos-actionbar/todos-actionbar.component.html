@@ -4,13 +4,13 @@
   <!-- Remove this if you don't implement routing -->
   <ul class="filters">
     <li>
-      <a [class.selected]="allSelected$ | async" href="#/">All</a>
+      <a [class.selected]="(visibility$ | async) === 0" href="#/">All</a>
     </li>
     <li>
-      <a [class.selected]="activeSelected$ | async" href="#/active">Active</a>
+      <a [class.selected]="(visibility$ | async) === 1" href="#/active">Active</a>
     </li>
     <li>
-      <a [class.selected]="completedSelected$ | async" href="#/completed">Completed</a>
+      <a [class.selected]="(visibility$ | async) === 2" href="#/completed">Completed</a>
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->
