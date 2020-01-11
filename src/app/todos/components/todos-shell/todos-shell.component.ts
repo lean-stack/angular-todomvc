@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {StoreService} from '../../state/store.service';
 import {VisibilityFilterService} from '../../services/visibility-filter.service';
+import {createTodo} from '../../state/actions';
 
 @Component({
   selector: 'todos-shell',
@@ -17,7 +18,7 @@ export class TodosShellComponent implements OnInit {
   }
 
   createTodo(title: string) {
-    this.store.createTodo(title);
+    this.store.dispatch(createTodo(title));
   }
 
 }

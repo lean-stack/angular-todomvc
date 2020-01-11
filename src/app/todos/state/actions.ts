@@ -21,6 +21,7 @@ export class CreateAction extends ActionBase {
 
 export class UpdateAction extends ActionBase {
   type: ActionType.Update;
+  id: number;
   changes: TodoChanges;
 }
 
@@ -47,7 +48,7 @@ export type Action =
   CreateAction | UpdateAction | RemoveAction | RemoveAllCompletedAction | SyncAllAction | SetVisibilityAction;
 
 export const createTodo = (title: string): CreateAction => ({ type: ActionType.Create, title });
-export const updateTodo = (id: number, changes: TodoChanges): UpdateAction => ({ type: ActionType.Update, changes });
+export const updateTodo = (id: number, changes: TodoChanges): UpdateAction => ({ type: ActionType.Update, id, changes });
 export const removeTodo = (id: number): RemoveAction => ({ type: ActionType.Remove, id });
 export const removeCompletedTodos = (): RemoveAllCompletedAction => ({ type: ActionType.RemoveCompleted });
 export const syncAllTodos = (completed: boolean): SyncAllAction => ({ type: ActionType.SyncAll, completed });

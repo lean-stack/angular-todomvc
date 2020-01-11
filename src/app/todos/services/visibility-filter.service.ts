@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {StoreService} from '../state/store.service';
 import {VisibilityFilter} from '../models/visibility-filter.enum';
+import {setVisibility} from '../state/actions';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class VisibilityFilterService {
 
   setVisibility() {
     const currentPath = this.location.path();
-    this.store.setVisibilty(this.mapPathToFilter(currentPath));
+    this.store.dispatch(setVisibility(this.mapPathToFilter(currentPath)));
   }
 
   private mapPathToFilter(path: string): VisibilityFilter {

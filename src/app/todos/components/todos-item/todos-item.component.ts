@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Todo} from '../../models/todo';
 import {StoreService} from '../../state/store.service';
+import {removeTodo, updateTodo} from '../../state/actions';
 
 @Component({
   selector: 'todos-item',
@@ -23,11 +24,11 @@ export class TodosItemComponent implements OnInit {
   }
 
   toggleCompletedState() {
-    this.store.toggleTodoCompletedState(this.todo);
+    this.store.dispatch(updateTodo(this.todo.id, { completed: !this.todo.completed }));
   }
 
   destroyItem() {
-    this.store.destroyTodo(this.todo);
+    this.store.dispatch(removeTodo(this.todo.id));
   }
 
   beginEdit() {
@@ -42,9 +43,9 @@ export class TodosItemComponent implements OnInit {
     }
 
     if (this.editText.trim().length === 0) {
-      this.store.destroyTodo(this.todo);
+      this.store.dispatch(removeTodo(this.todo.id));
     } else {
-      this.store.updateTodoTitle(this.todo, this.editText.trim());
+      this.store.dispatch(updateTodo(this.todo.id, { title: this.editText.trim() }));
     }
     this.editMode = false;
   }

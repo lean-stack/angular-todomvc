@@ -4,6 +4,7 @@ import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {syncAllTodos} from '../../state/actions';
 
 @Component({
   selector: 'todos-main',
@@ -41,6 +42,6 @@ export class TodosMainComponent implements OnInit {
   }
 
   syncAllStates() {
-    this.store.setAllCompletedStates(!this.allCompleted);
+    this.store.dispatch(syncAllTodos(!this.allCompleted));
   }
 }

@@ -3,6 +3,7 @@ import {StoreService} from '../../state/store.service';
 import {VisibilityFilter} from '../../models/visibility-filter.enum';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {removeCompletedTodos} from '../../state/actions';
 
 @Component({
   selector: 'todos-actionbar',
@@ -36,6 +37,6 @@ export class TodosActionbarComponent implements OnInit {
   }
 
   clearCompletedTodos() {
-    this.store.destroyAllCompletedTodos();
+    this.store.dispatch(removeCompletedTodos());
   }
 }
